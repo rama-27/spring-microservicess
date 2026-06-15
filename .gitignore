@@ -1,0 +1,54 @@
+# ==========================================
+# Target & Build Outputs (Maven)
+# ==========================================
+**/target/
+**.tag
+*.jar
+*.war
+*.ear
+*.rar
+*.class
+
+# ==========================================
+# IDE Specific Files & Directories
+# ==========================================
+# IntelliJ IDEA
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+gen/
+
+# Eclipse
+.metadata/
+.classpath
+.project
+.settings/
+*.launch
+.factorypath
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code
+.vscode/
+
+# ==========================================
+# Operating System / System Logs
+# ==========================================
+log/
+*.log
+.DS_Store
+Thumbs.db
+  
+# ==========================================
+# Local Configuration Override Safeguards
+# ==========================================
+# Ignore local application property overrides you don't want leaked to GitHub
+**/application-local.properties
+**/application-local.yml
