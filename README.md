@@ -70,9 +70,11 @@ spring-microservicess/
 │   └── mvnw
 ├── order-service/              # Order Business Microservice
 │   ├── src/main/java/com/example/orderservice/
-│   │   └── OrderServiceApplication.java
+│   │   ├── OrderServiceApplication.java
+│   │   └── controller/
+│   │       └── OrderMessageController.java # Dynamic config endpoint (@RefreshScope)
 │   ├── src/main/resources/
-│   │   └── application.yaml    # Application name & Config Server import
+│   │   └── application.yaml    # Config Server import & Actuator endpoints
 │   ├── pom.xml
 │   └── mvnw
 └── README.md
@@ -164,7 +166,37 @@ spring:
     name: order-service
   config:
     import: "optional:configserver:http://localhost:8888"
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: refresh, health, info
+  endpoint:
+    health:
+      show-details: always
 ```
+
+---
+
+## 🔄 Dynamic Property Hot-Reloading (Zero Downtime)
+
+`order-service` is configured with **Spring Boot Actuator** and `@RefreshScope` ([`OrderMessageController`](./order-service/src/main/java/com/example/orderservice/controller/OrderMessageController.java)) for zero-downtime property updates.
+
+### How to test dynamic reload:
+1. Check the current configuration endpoint:
+   ```bash
+   curl http://localhost:8080/orders/config
+   ```
+2. Update properties in your remote Git repository (`rama-27/config-repo`) (e.g. `order.message` or `order.discount`) and commit/push.
+3. Trigger a configuration refresh on `order-service` **without restarting**:
+   ```bash
+   curl -X POST http://localhost:8080/actuator/refresh
+   ```
+4. Query the endpoint again to see the updated properties immediately reflected:
+   ```bash
+   curl http://localhost:8080/orders/config
+   ```
 
 ---
 
